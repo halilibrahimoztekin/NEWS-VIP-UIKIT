@@ -15,12 +15,14 @@ import UIKit
 protocol HomeBusinessLogic
 {
     func fetchNews()
+    func setSelectArticle(indexPath: IndexPath)
 }
 
 protocol HomeDataStore
 {
     var page: Int { get set }
     var articles: [Home.News.Article]? { get set }
+    var selectedArticle: Home.News.Article?  { get set }
 }
 
 class HomeInteractor: HomeBusinessLogic, HomeDataStore
@@ -28,6 +30,7 @@ class HomeInteractor: HomeBusinessLogic, HomeDataStore
     var presenter: HomePresentationLogic?
     var page: Int = 1
     var articles: [Home.News.Article]?
+    var selectedArticle: Home.News.Article?
     
     
     func fetchNews() {
@@ -47,6 +50,10 @@ class HomeInteractor: HomeBusinessLogic, HomeDataStore
                 print(failure.localizedDescription)
             }
         }
+    }
+    
+    func setSelectArticle(indexPath: IndexPath) {
+        selectedArticle = articles?[indexPath.row]
     }
     
 }

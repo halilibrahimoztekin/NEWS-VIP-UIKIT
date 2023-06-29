@@ -15,6 +15,7 @@ import UIKit
 protocol HomePresentationLogic
 {
     func presentPrepareDataSource(articles: [Home.News.Article]?)
+    func presentDetailPage()
 }
 
 class HomePresenter: HomePresentationLogic
@@ -22,7 +23,11 @@ class HomePresenter: HomePresentationLogic
   weak var viewController: HomeDisplayLogic?
   
     func presentPrepareDataSource(articles: [Home.News.Article]?) {
-        self.viewController?.prepareCollectionView(articles: articles)
+        self.viewController?.displayPrepareCollectionView(articles: articles)
+    }
+    
+    func presentDetailPage() {
+        
     }
   
   

@@ -20,7 +20,7 @@ class NewsCollectionCell: UICollectionViewCell,ConfigurableCell {
     func configure(_ item: Home.News.Article, at indexPath: IndexPath) {
         
         let viewModel = item
-        newsImageView.image = .actions
+        newsImageView.setImage(with: URL(string: item.urlToImage.unwrapWithEmpty))
         titleLabel.text = viewModel.title
         descriptionLabel.text = viewModel.description
         dateLabel.text = viewModel.publishedAt

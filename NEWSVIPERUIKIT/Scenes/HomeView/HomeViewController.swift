@@ -19,17 +19,20 @@ import UIKit
 
 protocol HomeDisplayLogic: AnyObject
 {
-    func prepareCollectionView(articles: [Home.News.Article]?)
+    func displayPrepareCollectionView(articles: [Home.News.Article]?)
+    func displayNavigateNewsDetail()
 }
 
 class HomeViewController: UIViewController, HomeDisplayLogic
 {
+   
+    
     var interactor: HomeBusinessLogic?
     var router: (NSObjectProtocol & HomeRoutingLogic & HomeDataPassing)?
     
     @IBOutlet var collectionView: UICollectionView!
     fileprivate var newsDataSource: NewsDataSource?
-
+    
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
     {
@@ -57,25 +60,36 @@ class HomeViewController: UIViewController, HomeDisplayLogic
         router.viewController = viewController
         router.dataStore = interactor
     }
-
+    
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
         fetchNews()
     }
- 
+    
     
     func fetchNews(){
         interactor?.fetchNews()
     }
+   
     
-    func prepareCollectionView(articles: [Home.News.Article]?) {
+    func displayNavigateNewsDetail() {
+        
+    }
+    
+    func displayPrepareCollectionView(articles: [Home.News.Article]?) {
         if let articles = articles {
             
             DispatchQueue.main.async {
                 let datasource = NewsDataSource(collectionView: self.collectionView, array: articles)
                 self.newsDataSource = datasource
+                
+                self.newsDataSource?.collectionItemSelectionHandler = { [weak self] indexPath in
+                    
+                    self?.interactor?.setSelectArticle(indexPath: indexPath)
+                }
+                
                 self.collectionView.reloadData()
             }
             
