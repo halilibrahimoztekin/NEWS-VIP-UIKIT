@@ -7,3 +7,6 @@
 
 import Foundation
 class NewsDataSource: CollectionArrayDataSource<Home.News.Article, NewsCollectionCell> {}
+class NewsDetailDataSource: CollectionArrayDataSource<[String : Any], DetailPageCollectionViewCell> {
+    
+}

@@ -1,5 +1,5 @@
 //
-//  HomeViewController.swift
+//  DetailPageViewController.swift
 //  NEWSVIPERUIKIT
 //
 //  Created by Halil İbrahim Öztekin on 29.06.2023.
@@ -7,21 +7,20 @@
 
 import UIKit
 
-protocol HomeDisplayLogic: AnyObject
+protocol DetailPageDisplayLogic: AnyObject
 {
-    func displayPrepareCollectionView(articles: [Home.News.Article]?)
-    func displayNavigateNewsDetail()
+    func displayPrepareCollectionView(articles: [[String : Any]]?)
     func displayAlert(title: String?, message: String?, actions: [AlertAction])
 }
 
-class HomeViewController: UIViewController, HomeDisplayLogic
+class DetailPageViewController: UIViewController, DetailPageDisplayLogic
 {
-    var interactor: HomeBusinessLogic?
-    var router: (NSObjectProtocol & HomeRoutingLogic & HomeDataPassing)?
+    var interactor: DetailPageBusinessLogic?
+    var router: (NSObjectProtocol & DetailPageRoutingLogic & DetailPageDataPassing)?
+    
+    fileprivate var newsDataSource: NewsDetailDataSource?
     
     @IBOutlet var collectionView: UICollectionView!
-    fileprivate var newsDataSource: NewsDataSource?
-    
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
     {
@@ -35,13 +34,14 @@ class HomeViewController: UIViewController, HomeDisplayLogic
         setup()
     }
     
+    // MARK: Setup
     
     private func setup()
     {
         let viewController = self
-        let interactor = HomeInteractor()
-        let presenter = HomePresenter()
-        let router = HomeRouter()
+        let interactor = DetailPageInteractor()
+        let presenter = DetailPagePresenter()
+        let router = DetailPageRouter()
         viewController.interactor = interactor
         viewController.router = router
         interactor.presenter = presenter
@@ -51,41 +51,36 @@ class HomeViewController: UIViewController, HomeDisplayLogic
     }
     
     
+    
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        fetchNews()
+        interactor?.loadViews()
     }
     
-    
-    func fetchNews(){
-        interactor?.fetchNews()
-    }
-   
-    
-    func displayNavigateNewsDetail() {
-        router?.routeToDetailVC()
-    }
-    
-    func displayPrepareCollectionView(articles: [Home.News.Article]?) {
+    func displayPrepareCollectionView(articles: [[String : Any]]?) {
         if let articles = articles {
             
             DispatchQueue.main.async {
-                let datasource = NewsDataSource(collectionView: self.collectionView, array: articles)
+                let datasource = NewsDetailDataSource(collectionView: self.collectionView, array: articles)
+                
                 self.newsDataSource = datasource
                 
-                self.newsDataSource?.collectionItemSelectionHandler = { [weak self] indexPath in
-                    
-                    self?.interactor?.setSelectArticle(indexPath: indexPath)
-                }
+                self.newsDataSource?.collectionView
                 
-                self.collectionView.reloadData()
+                self.newsDataSource?.collectionView.reloadData()
             }
             
         }
     }
     
+    
     func displayAlert(title: String?, message: String?, actions: [AlertAction] = []) {
         AlertManager.showAlert(title: title, message: message,actions: actions)
     }
+    
+    @IBAction func viewAllButtonTapped(_ sender: Any) {
+    }
+    
 }

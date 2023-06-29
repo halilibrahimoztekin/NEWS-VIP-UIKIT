@@ -71,4 +71,7 @@ open class CollectionDataSource<Provider: CollectionDataProvider, Cell: UICollec
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionItemSelectionHandler?(indexPath)
     }
+    
+    
+  
 }

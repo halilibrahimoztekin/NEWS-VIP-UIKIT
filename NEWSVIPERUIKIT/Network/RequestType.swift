@@ -12,7 +12,7 @@ enum URLConstants  : String {
     case host = "newsapi.org"
     case path = "/v2/top-headlines"
     case country = "us"
-    case apiKey = "d80445e104b541b7b84c369d1bbf9be4"
+    case apiKey = "f93ea2c7dc1c41808768b85561856ee4"
 }
 enum RequestType {
     case search(page : Int = 1)
@@ -30,7 +30,7 @@ enum RequestType {
         case .search(let page):
             components.queryItems = [
                 URLQueryItem(name: "country", value: URLConstants.country.rawValue),
-                URLQueryItem(name: "pageSize", value: "20"),
+                URLQueryItem(name: "pageSize", value: "100"),
                 URLQueryItem(name: "page", value: String(page)),
                 URLQueryItem(name: "Apikey", value: URLConstants.apiKey.rawValue)
             ]
